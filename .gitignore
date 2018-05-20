@@ -2,6 +2,7 @@ bin
 config.json
 include
 keys
+data
 pip-selfcheck.json
 
 # Byte-compiled / optimized / DLL files

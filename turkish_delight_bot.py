@@ -7,7 +7,7 @@ import bot.command_menu as cm
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
-    '-r', type=int,
+    '-r', type=str, default=None,
     help="Channel ID from which the bot was restarted from.")
 
 args = parser.parse_args()
@@ -19,7 +19,6 @@ client = discord.Client()
 async def on_ready():
     global auth
 
-    print("HI")
     auth = authentication.Auth(client)
     init_bot.init(client, args)
 

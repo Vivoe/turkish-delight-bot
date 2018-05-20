@@ -1,8 +1,10 @@
 #!/bin/bash
 
-if [ -z $1 ]; then
+if [ ! -z $1 ]; then
     RESTART_CHANNEL_ID="-r $1"
 fi
+
+echo $RESTART_CHANNEL_ID
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR

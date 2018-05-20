@@ -20,7 +20,7 @@ if [ ! -d "logs" ]; then
 fi
 
 ts=$(date +%s)
-pkill -f "python turkish_delight_bot.py"
-python turkish_delight_bot.py $RESTART_CHANNEL_ID > logs/platbot-$ts.log 2>&1 &
+pkill -f "python3 turkish_delight_bot.py"
+python3 turkish_delight_bot.py $RESTART_CHANNEL_ID > logs/platbot-$ts.log 2>&1 &
 
 echo "Plat-bot running."

@@ -1,0 +1,380 @@
+{
+    "cernos_prime_blueprint": [
+        "Lith Z1 uncommon"
+    ],
+    "valkyr_prime_blueprint": [
+        "Axi V7 common",
+        "Neo K1 common",
+        "Lith N3 common"
+    ],
+    "paris_prime_grip": [
+        "Lith S7 uncommon"
+    ],
+    "kronen_prime_handle": [
+        "Neo B4 uncommon"
+    ],
+    "nekros_prime_chassis_blueprint": [
+        "Neo Z1 common"
+    ],
+    "nami_skyla_prime_handle": [
+        "Lith C2 uncommon"
+    ],
+    "akbolto_prime_link": [
+        "Lith S7 uncommon"
+    ],
+    "fang_prime_blueprint": [
+        "Meso T1 common",
+        "Neo B2 common"
+    ],
+    "zephyr_prime_systems_blueprint": [
+        "Lith Z1 rare"
+    ],
+    "galatine_prime_blade": [
+        "Lith S7 common",
+        "Axi O2 common"
+    ],
+    "silva_&_aegis_prime_guard": [
+        "Neo S7 rare"
+    ],
+    "nami_skyla_prime_blade": [
+        "Axi N5 rare"
+    ],
+    "nekros_prime_systems_blueprint": [
+        "Meso N5 rare"
+    ],
+    "mirage_prime_blueprint": [
+        "Neo M1 rare"
+    ],
+    "mirage_prime_chassis_blueprint": [
+        "Lith S7 common"
+    ],
+    "kronen_prime_blade": [
+        "Axi K2 rare"
+    ],
+    "cernos_prime_string": [
+        "Axi A3 uncommon",
+        "Axi K2 uncommon"
+    ],
+    "braton_prime_blueprint": [
+        "Lith V3 common",
+        "Axi V6 common",
+        "Lith N3 uncommon"
+    ],
+    "tiberon_prime_stock": [
+        "Meso T2 rare"
+    ],
+    "braton_prime_receiver": [
+        "Lith B2 uncommon"
+    ],
+    "orthos_prime_handle": [
+        "Axi K2 common",
+        "Neo Z1 common"
+    ],
+    "akbolto_prime_barrel": [
+        "Lith C2 uncommon"
+    ],
+    "kronen_prime_blueprint": [
+        "Axi H3 common"
+    ],
+    "banshee_prime_neuroptics_blueprint": [
+        "Neo S7 common"
+    ],
+    "valkyr_prime_neuroptics_blueprint": [
+        "Lith T1 uncommon"
+    ],
+    "zephyr_prime_neuroptics_blueprint": [
+        "Lith H2 common"
+    ],
+    "orthos_prime_blueprint": [
+        "Lith H2 uncommon"
+    ],
+    "nami_skyla_prime_blueprint": [
+        "Axi V7 common"
+    ],
+    "ballistica_prime_blueprint": [
+        "Lith B2 rare"
+    ],
+    "akbronco_prime_blueprint": [
+        "Lith T1 common",
+        "Lith Z1 common"
+    ],
+    "bronco_prime_barrel": [
+        "Axi E2 uncommon"
+    ],
+    "ballistica_prime_string": [
+        "Meso G1 uncommon"
+    ],
+    "tiberon_prime_blueprint": [
+        "Axi O2 uncommon"
+    ],
+    "nekros_prime_neuroptics_blueprint": [
+        "Axi N5 uncommon"
+    ],
+    "paris_prime_lower_limb": [
+        "Lith V3 common",
+        "Meso O2 common",
+        "Meso T2 common",
+        "Lith B2 common"
+    ],
+    "fang_prime_blade": [
+        "Neo S7 common",
+        "Axi O2 common"
+    ],
+    "fang_prime_handle": [
+        "Lith Z1 common",
+        "Axi V6 uncommon"
+    ],
+    "venka_prime_blades": [
+        "Lith C2 common",
+        "Meso G1 common"
+    ],
+    "banshee_prime_chassis_blueprint": [
+        "Neo B2 rare"
+    ],
+    "tigris_prime_stock": [
+        "Lith B2 common",
+        "Neo B2 common"
+    ],
+    "burston_prime_stock": [
+        "Neo B4 common"
+    ],
+    "galatine_prime_handle": [
+        "Axi K2 uncommon",
+        "Axi V6 uncommon",
+        "Neo Z1 uncommon"
+    ],
+    "burston_prime_barrel": [
+        "Axi H3 uncommon"
+    ],
+    "paris_prime_blueprint": [
+        "Axi E2 common",
+        "Neo Z1 common"
+    ],
+    "sybaris_prime_barrel": [
+        "Lith S7 rare"
+    ],
+    "valkyr_prime_chassis_blueprint": [
+        "Axi V6 rare"
+    ],
+    "ballistica_prime_upper_limb": [
+        "Lith T1 uncommon"
+    ],
+    "euphona_prime_barrel": [
+        "Neo M1 uncommon"
+    ],
+    "zephyr_prime_chassis_blueprint": [
+        "Neo K1 uncommon"
+    ],
+    "tigris_prime_blueprint": [
+        "Lith T1 rare"
+    ],
+    "tiberon_prime_barrel": [
+        "Meso T1 rare"
+    ],
+    "helios_prime_blueprint": [
+        "Neo K1 uncommon",
+        "Neo M1 uncommon"
+    ],
+    "silva_&_aegis_prime_hilt": [
+        "Neo K1 common"
+    ],
+    "venka_prime_gauntlet": [
+        "Axi V7 rare"
+    ],
+    "venka_prime_blueprint": [
+        "Neo B2 uncommon"
+    ],
+    "ballistica_prime_receiver": [
+        "Neo S7 uncommon"
+    ],
+    "paris_prime_string": [
+        "Axi O2 common",
+        "Neo M1 common"
+    ],
+    "valkyr_prime_systems_blueprint": [
+        "Lith V3 rare"
+    ],
+    "forma_blueprint": [
+        "Axi K2 common",
+        "Lith H2 common",
+        "Lith T1 common",
+        "Meso T2 common",
+        "Axi H3 uncommon",
+        "Lith Z1 uncommon",
+        "Axi E2 uncommon",
+        "Meso T1 uncommon",
+        "Axi V6 common",
+        "Lith B2 common",
+        "Meso N5 common",
+        "Neo B2 uncommon",
+        "Neo B4 common",
+        "Meso G1 common",
+        "Neo Z1 uncommon",
+        "Lith N3 uncommon"
+    ],
+    "banshee_prime_blueprint": [
+        "Meso T2 uncommon"
+    ],
+    "oberon_prime_blueprint": [
+        "Lith H2 uncommon"
+    ],
+    "galatine_prime_blueprint": [
+        "Meso G1 rare"
+    ],
+    "bronco_prime_blueprint": [
+        "Neo M1 common"
+    ],
+    "sybaris_prime_receiver": [
+        "Neo S7 uncommon"
+    ],
+    "braton_prime_barrel": [
+        "Axi A3 common",
+        "Meso G1 common"
+    ],
+    "orthos_prime_blade": [
+        "Lith B2 uncommon"
+    ],
+    "helios_prime_cerebrum": [
+        "Lith H2 rare"
+    ],
+    "euphona_prime_receiver": [
+        "Axi E2 rare"
+    ],
+    "lex_prime_barrel": [
+        "Lith H2 common",
+        "Meso T2 common",
+        "Axi N5 common",
+        "Axi V7 common"
+    ],
+    "akbolto_prime_receiver": [
+        "Axi A3 rare"
+    ],
+    "hydroid_prime_blueprint": [
+        "Meso N5 uncommon"
+    ],
+    "tigris_prime_receiver": [
+        "Meso T2 uncommon",
+        "Meso N5 uncommon"
+    ],
+    "banshee_prime_systems_blueprint": [
+        "Neo B4 rare"
+    ],
+    "akbolto_prime_blueprint": [
+        "Neo M1 common"
+    ],
+    "kogake_prime_blueprint": [
+        "Axi V7 uncommon"
+    ],
+    "oberon_prime_neuroptics_blueprint": [
+        "Meso O2 rare"
+    ],
+    "mirage_prime_systems_blueprint": [
+        "Meso O2 uncommon"
+    ],
+    "zephyr_prime_blueprint": [
+        "Neo Z1 rare"
+    ],
+    "helios_prime_carapace": [
+        "Axi A3 common",
+        "Neo S7 common",
+        "Axi H3 common"
+    ],
+    "helios_prime_systems": [
+        "Lith V3 uncommon",
+        "Axi N5 uncommon",
+        "Axi O2 uncommon"
+    ],
+    "ballistica_prime_lower_limb": [
+        "Axi V6 common"
+    ],
+    "sybaris_prime_blueprint": [
+        "Axi K2 common"
+    ],
+    "lex_prime_receiver": [
+        "Axi E2 common",
+        "Meso N5 common"
+    ],
+    "tigris_prime_barrel": [
+        "Lith V3 uncommon",
+        "Neo B4 uncommon"
+    ],
+    "kogake_prime_gauntlet": [
+        "Neo K1 rare"
+    ],
+    "silva_&_aegis_prime_blade": [
+        "Meso G1 uncommon"
+    ],
+    "cernos_prime_lower_limb": [
+        "Lith C2 rare"
+    ],
+    "tiberon_prime_receiver": [
+        "Meso O2 common"
+    ],
+    "oberon_prime_systems_blueprint": [
+        "Axi O2 rare"
+    ],
+    "silva_&_aegis_prime_blueprint": [
+        "Axi V7 uncommon"
+    ],
+    "sybaris_prime_stock": [
+        "Lith N3 common"
+    ],
+    "bronco_prime_receiver": [
+        "Lith C2 common"
+    ],
+    "nekros_prime_blueprint": [
+        "Lith N3 rare"
+    ],
+    "kogake_prime_boot": [
+        "Axi A3 common"
+    ],
+    "paris_prime_upper_limb": [
+        "Lith C2 common",
+        "Meso T1 uncommon"
+    ],
+    "burston_prime_receiver": [
+        "Meso T1 common",
+        "Lith N3 common"
+    ],
+    "akbronco_prime_link": [
+        "Meso O2 uncommon"
+    ],
+    "braton_prime_stock": [
+        "Axi E2 common",
+        "Meso T1 common",
+        "Meso N5 common",
+        "Neo B2 common"
+    ],
+    "oberon_prime_chassis_blueprint": [
+        "Axi N5 common"
+    ],
+    "burston_prime_blueprint": [
+        "Lith T1 common"
+    ],
+    "euphona_prime_blueprint": [
+        "Axi N5 common",
+        "Neo K1 common"
+    ],
+    "hydroid_prime_systems_blueprint": [
+        "Axi H3 rare"
+    ],
+    "hydroid_prime_neuroptics_blueprint": [
+        "Axi A3 uncommon"
+    ],
+    "hydroid_prime_chassis_blueprint": [
+        "Neo B4 common"
+    ],
+    "cernos_prime_grip": [
+        "Axi H3 common"
+    ],
+    "mirage_prime_neuroptics_blueprint": [
+        "Lith Z1 common"
+    ],
+    "lex_prime_blueprint": [
+        "Lith S7 common"
+    ],
+    "cernos_prime_upper_limb": [
+        "Lith V3 common",
+        "Meso O2 common"
+    ]
+}

@@ -1,7 +1,6 @@
 import discord
+import json
 import sys
-
-import bot.auth as authentication
 
 client = discord.Client()
 
@@ -14,5 +13,8 @@ async def on_ready():
 
     await client.logout()
 
+with open('keys/bot_token.json') as f:
+    token = json.load(f)['token']
 
-client.run(authentication.token())
+
+client.run(token)

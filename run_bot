@@ -1,0 +1,26 @@
+#!/bin/bash
+
+if [ -z $1 ]; then
+    RESTART_CHANNEL_ID="-r $1"
+fi
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+if [ $USER == 'ubuntu' ]; then
+	git pull origin master
+    source bin/activate
+	pip install -r requirements.txt
+else
+	echo "Not on prod!"
+fi
+
+if [ ! -d "logs" ]; then
+	mkdir logs
+fi
+
+ts=$(date +%s)
+pkill -f "python turkish_delight_bot.py"
+python turkish_delight_bot.py $RESTART_CHANNEL_ID > logs/platbot-$ts.log 2>&1 &
+
+echo "Plat-bot running."

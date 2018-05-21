@@ -11,20 +11,20 @@ parser.add_argument(
     help="Channel ID from which the bot was restarted from.")
 
 args = parser.parse_args()
-auth = None
+command_menu = None
 client = discord.Client()
 
 
 @client.event
 async def on_ready():
-    global auth
+    global command_menu
 
-    auth = authentication.Auth(client)
+    command_menu = cm.CommandMenu(client)
     init_bot.init(client, args)
 
 
 @client.event
 async def on_message(message):
-    await cm.exec_command(client, auth, message)
+    await command_menu.exec_command(message)
 
 client.run(authentication.token())

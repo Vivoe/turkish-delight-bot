@@ -1,4 +1,5 @@
 import bot.commands as cmds
+import bot.auth as auth
 
 async def admin_command_menu(client, message):
     print("Admin command")
@@ -41,13 +42,37 @@ async def command_menu(client, message):
             'Unknown command "%s".' % tokens[0])
 
 
-async def exec_command(client, auth, message):
-    if message.author.name == 'plat-bot':
-        return
+class CommandMenu:
+    def __init__(self, client):
+        self.client = client
+        self.auth = auth.Auth(client)
 
-    auth_level = auth.authenticate(message.channel)
+        commands = [
+            cmds.PlatConversionCommand(client)
+        ]
 
-    if (auth_level >= 2 and message.content[:2] == '!!'):
-        await admin_command_menu(client, message)
-    elif message.content[0] == '!':
-        await command_menu(client, message)
+        self.commands = dict(map(lambda c: (c.cmd, c), commands))
+
+        self.help_str = 'Commands:\n' + '\n'.join(
+            list(map(
+                lambda c: c.parser.format_usage()[7:],
+                self.commands.values())))
+
+    async def exec_normal_command(self, message):
+        cmd = message.content.split(' ', 1)[0]
+
+        if cmd == '!help':
+            await self.client.send_message(message.channel, self.help_str)
+        elif cmd in self.commands:
+            await self.commands[cmd].exec(message)
+
+    async def exec_command(self, message):
+        if message.author.name == 'plat-bot':
+            return
+
+        auth_level = self.auth.authenticate(message.channel)
+
+        if (auth_level >= 2 and message.content[:2] == '!!'):
+            await admin_command_menu(self.client, message)
+        elif message.content[0] == '!':
+            await self.exec_normal_command(message)

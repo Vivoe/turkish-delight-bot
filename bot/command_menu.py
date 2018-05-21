@@ -1,6 +1,7 @@
 import bot.commands as cmds
 import bot.auth as auth
 
+
 async def admin_command_menu(client, message):
     print("Admin command")
     print("Message: %s" % message.content)
@@ -51,7 +52,7 @@ class CommandMenu:
             cmds.PlatConversionCommand(client)
         ]
 
-        self.commands = dict(map(lambda c: (c.cmd, c), commands))
+        self.commands = dict(map(lambda c: (c.cmd_name, c), commands))
 
         self.help_str = 'Commands:\n' + '\n'.join(
             list(map(

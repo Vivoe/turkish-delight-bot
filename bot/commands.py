@@ -1,9 +1,9 @@
 import shlex
 import bot.utils as utils
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 
 
-class Command:
+class Command(ABC):
     @abstractmethod
     def get_parser(self):
         pass
@@ -18,12 +18,12 @@ class Command:
         args = await self.parser.parse_args(
             self.client, message.channel, raw_args)
 
-        await cmd(message, args)
+        await self.cmd(message, args)
 
     def __init__(self, client):
         self.client = client
         self.parser = self.get_parser()
-        self.cmd = self.parser.prog
+        self.cmd_name = self.parser.prog
 
 
 class PlatConversionCommand(Command):

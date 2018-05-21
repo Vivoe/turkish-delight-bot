@@ -9,8 +9,16 @@ class Command:
         pass
 
     @abstractmethod
-    async def exec(message):
+    async def cmd(self, message, args):
         pass
+
+    @utils.catch_async_sys_exit
+    async def exec(self, message):
+        raw_args = shlex.split(message.content)[1:]
+        args = await self.parser.parse_args(
+            self.client, message.channel, raw_args)
+
+        await cmd(message, args)
 
     def __init__(self, client):
         self.client = client
@@ -26,11 +34,6 @@ class PlatConversionCommand(Command):
 
         return parser
 
-    @utils.catch_async_sys_exit
-    async def exec(self, message):
-        raw_args = shlex.split(message.content)[1:]
-        args = await self.parser.parse_args(
-            self.client, message.channel, raw_args)
-
+    async def cmd(self, message, args):
         cad = args.plat * (5.49 / 75.0)
         await self.client.send_message(message.channel, "Aka $%s." % cad)

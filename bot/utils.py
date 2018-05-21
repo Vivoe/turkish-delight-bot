@@ -28,11 +28,9 @@ def idx_to_rarity(idx):
 
 def catch_async_sys_exit(func):
     async def new_func(*args, **kwargs):
-        print("In decorator")
         try:
             return await func(*args, **kwargs)
         except SystemExit as e:
-            print("Decorator catch.")
             pass
 
     return new_func
@@ -66,7 +64,6 @@ class DiscordParser(argparse.ArgumentParser):
                 self.error(msg % ' '.join(argv))
             return args
         except SystemExit as e:
-            print("Parse args catch.")
             # Get buffer and reset stream.
             out = self.arg_stream.getvalue()
             self.arg_stream = io.StringIO()

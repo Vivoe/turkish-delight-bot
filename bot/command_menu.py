@@ -1,5 +1,6 @@
 import bot.commands as cmds
 
+
 async def admin_command_menu(client, message):
     print("Admin command")
     print("Message: %s" % message.content)
@@ -12,7 +13,13 @@ async def admin_command_menu(client, message):
             """
             Admin command list:
             !!help
+            !!restart
+            !!host
             """)
+    elif tokens[0] == "!!restart":
+        await cmds.restart(client, message)
+    elif tokens[0] == "!!host":
+        await cmds.get_host_url(client, message)
     else:
         await client.send_message(
             message.channel,
@@ -32,9 +39,33 @@ async def command_menu(client, message):
             Command list:
             !help
             !plat n_plat
+            !voidtrader
+            !updaterelics
+            !listrelics
+            !want part
+            !remove part
+            !listwanted
+            !relic relic
+            !part part
             """)
     elif tokens[0] == '!plat':
         await cmds.plat_conversion(client, message)
+    elif tokens[0] == '!voidtrader':
+        await cmds.void_trader(client, message)
+    elif tokens[0] == '!updaterelics':
+        await cmds.update_relics(client, message)
+    elif tokens[0] == '!listrelics':
+        await cmds.list_relics(client, message)
+    elif tokens[0] == '!want':
+        await cmds.add_wanted_part(client, message)
+    elif tokens[0] == '!remove':
+        await cmds.remove_part(client, message)
+    elif tokens[0] == '!listwanted':
+        await cmds.list_wanted(client, message)
+    elif tokens[0] == '!relic':
+        await cmds.relic_info(client, message)
+    elif tokens[0] == '!part':
+        await cmds.parts_info(client, message)
     else:
         await client.send_message(
             message.channel,

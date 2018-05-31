@@ -20,7 +20,7 @@ async def on_ready():
     global auth
 
     auth = authentication.Auth(client)
-    init_bot.init(client, args)
+    await init_bot.init(client, args)
 
 
 @client.event

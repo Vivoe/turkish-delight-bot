@@ -1,5 +1,8 @@
 import argparse
+import asyncio
 import io
+import json
+import requests
 
 paths = {
     'relic_info': 'data/relic_info.json',
@@ -12,6 +15,10 @@ def to_itemid(item):
     return item.lower().replace(' ', '_')
 
 
+def pad(s, n):
+    return s + ' ' * (n - len(s))
+
+
 def idx_to_rarity(idx):
     if idx <= 2:
         return 'common'
@@ -19,6 +26,34 @@ def idx_to_rarity(idx):
         return 'uncommon'
     else:
         return 'rare'
+
+
+def get_json(path_id):
+    # Use this function. Can go optimize this later into in-memory.
+    # Expects elements defined in path variable.
+    assert path_id in paths, "Bad path id."
+
+    with open(paths[path_id]) as f:
+        d = json.load(f)
+    return d
+
+
+def save_json(path_id, d):
+    assert path_id in paths, "Bad path id."
+
+    with open(paths[path_id], 'w') as f:
+        json.dump(d, f, indent=4)
+
+
+def warframe_market_url(item_id):
+    return 'https://api.warframe.market/v1/items/' +\
+     item_id + '/orders?include=item'
+
+
+async def async_request(url):
+    loop = asyncio.get_event_loop()
+    response = await loop.run_in_executor(None, requests.get, url)
+    return response
 
 #
 # Argument parser tricks

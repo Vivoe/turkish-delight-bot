@@ -106,22 +106,20 @@ def part_to_relic_mapping(relic_info):
     return parts
 
 
-def update_relic_info():
+async def update_relic_info():
     """
     Creates/updates the relic_info.json and part_info.json files.
+    Is ok not be async. Makes sense to block message responses until finished.
     """
 
     relic_url = \
         'http://warframe.wikia.com/wiki/Void_Relic/DropLocationsByRelic'
-    req = requests.get(relic_url)
+    req = await utils.async_request(relic_url)
 
     soup = BeautifulSoup(req.text, 'html.parser')
 
     relic_info = extract_relic_info(soup)
     part_info = part_to_relic_mapping(relic_info)
 
-    with open(utils.paths['relic_info'], 'w') as f:
-        json.dump(relic_info, f, indent=4)
-
-    with open(utils.paths['part_info'], 'w') as f:
-        json.dump(part_info, f, indent=4)
+    utils.save_json('relic_info', relic_info)
+    utils.save_json('part_info', part_info)

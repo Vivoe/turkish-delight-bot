@@ -11,11 +11,12 @@ cd $DIR
 
 if [ $USER == 'ubuntu' ]; then
 	git pull origin master
-    source bin/activate
-	pip install -r requirements.txt
 else
 	echo "Not on prod!"
 fi
+
+source bin/activate
+pip install -r requirements.txt
 
 if [ ! -d "logs" ]; then
 	mkdir logs
@@ -23,6 +24,6 @@ fi
 
 ts=$(date +%s)
 pkill -f "python3 turkish_delight_bot.py"
-python3 turkish_delight_bot.py $RESTART_CHANNEL_ID > logs/platbot-$ts.log 2>&1 &
+python3 turkish_delight_bot.py $RESTART_CHANNEL_ID &
 
 echo "Plat-bot running."

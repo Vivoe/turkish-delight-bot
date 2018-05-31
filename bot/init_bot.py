@@ -32,6 +32,8 @@ async def init(client, args):
     create_if_not_exists(utils.paths['part_info'])
 
     await ri.update_relic_info()
-    await poll.poll(client)
 
     print("Bot ready.")
+    await poll.poll(client)
+
+

@@ -1,0 +1,31 @@
+#!/bin/bash
+
+USEID=false
+
+while getopts ":i:" opt; do
+	case ${opt} in
+		i )
+			USEID=true
+		;;
+		\? )
+			echo 'Usage: addr=$(get_aws_addr [-i] instance)'
+		;;
+	esac
+done
+
+ARG1=${@:$OPTIND:1} 
+
+# Get key name.
+if $USEID ; then
+	SELECTOR="--instance-ids $ARG1"
+else
+	SELECTOR='--filters Name=tag:Name,Values='$ARG1
+fi
+
+line=$(aws ec2 describe-instances $SELECTOR --output json --query 'Reservations[0].Instances[0].[KeyName, PublicDnsName]')
+
+TOKENS=$(echo $line | tr '[],' ' ' | xargs)
+ADDR=$(echo $TOKENS | cut -d' ' -f2)
+
+echo $ADDR
+

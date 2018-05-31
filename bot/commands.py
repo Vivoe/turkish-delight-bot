@@ -44,13 +44,17 @@ async def get_host_url(client, message):
             './get_aws_addr', config['host'],
             stdout=asyncio.subprocess.PIPE)
 
-        host = await res.stdout.read().strip()
+        raw_host = await res.stdout.readline()
+        host = raw_host.decode('ascii').rstrip()
+        print(host)
         if (host == 'null'):
             out_message = "Error: Host name misconfigured."
         else:
             out_message = host
 
         await client.send_message(message.channel, out_message)
+    else:
+        await client.send_message(message.channel, "Host not configured.")
 
 
 @utils.catch_async_sys_exit

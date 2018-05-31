@@ -55,5 +55,6 @@ async def poll(client):
         .get_channel(config['default_channel'])
 
     while True:
+        print("Poll")
         await check_alerts(client, default_channel)
         await asyncio.sleep(60)

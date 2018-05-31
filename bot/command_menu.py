@@ -57,7 +57,7 @@ async def command_menu(client, message):
     elif tokens[0] == '!listrelics':
         await cmds.list_relics(client, message)
     elif tokens[0] == '!want':
-        await cmds.add_wanted_part(client, message)
+        await cmds.add_wanted_partl(client, message)
     elif tokens[0] == '!remove':
         await cmds.remove_part(client, message)
     elif tokens[0] == '!listwanted':

@@ -16,7 +16,7 @@ async def init(client, args):
         print(config)
 
         default_channel = client.get_server(config['servers'][0])\
-            .get_channel(config['default_channel'])
+            .get_channel(args.r)
         await client.send_message(default_channel, "Bot restarted!")
 
     if not os.path.exists('data'):

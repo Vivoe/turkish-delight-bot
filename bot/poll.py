@@ -1,4 +1,5 @@
 import asyncio
+import logging
 import time
 
 from bs4 import BeautifulSoup
@@ -6,8 +7,11 @@ from bs4 import BeautifulSoup
 import bot.utils as utils
 from bot.config import config
 
+logger = logging.getLogger()
+
 
 async def check_alerts(client, channel):
+    logger.info("Checking for alerts.")
     wanted_list = utils.get_json('wanted_list')
 
     url = 'http://deathsnacks.com/wf/'
@@ -17,8 +21,7 @@ async def check_alerts(client, channel):
         ts = int(time.time())
         soup = BeautifulSoup(req.text, 'html.parser')
 
-        parts = \
-            soup.find(
+        parts = soup.find(
                 'ul',
                 {'class': ['list-group', 'alerts-container']})\
             .find_all('span', {'class': 'badge'})
@@ -30,6 +33,7 @@ async def check_alerts(client, channel):
             item_id = utils.to_itemid(item)
 
             users = []
+            usernames = []
             for i in range(len(wanted_list)):
                 want = wanted_list[i]
                 if want['item_id'] == item_id:
@@ -38,15 +42,22 @@ async def check_alerts(client, channel):
                             (ts - want['last_updated'] >= 12 * 60 * 60)):
 
                         users.append(want['userID'])
+                        usernames.append(want['user'])
                         wanted_list[i]['last_updated'] = ts
 
             if len(users) > 0:
+                logging.info('Alert for %s, notifying %s'
+                             % (item_id, ', '.join(usernames)))
+
                 await client.send_message(
                     channel,
                     '<@' + users.join('> <@') + '>: Alert for part ' +
                     item_id + '\nhttp://deathsnacks.com/wf/')
 
         utils.save_json('wanted_list', wanted_list)
+    else:
+        logger.error("Request for %s returned error code %s."
+                     % (url, req.status_code))
 
 
 async def poll(client):
@@ -55,6 +66,6 @@ async def poll(client):
         .get_channel(config['default_channel'])
 
     while True:
-        print("Poll")
+        logger.info('Polling.')
         await check_alerts(client, default_channel)
         await asyncio.sleep(60)

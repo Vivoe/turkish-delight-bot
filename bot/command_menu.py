@@ -1,13 +1,17 @@
+import logging
+
 import bot.commands as cmds
+
+logger = logging.getLogger()
 
 
 async def admin_command_menu(client, message):
-    print("Admin command")
-    print("Message: %s" % message.content)
+    logger.info("Admin command: %s" % message.content)
 
     tokens = message.content.split(' ')
 
     if (tokens[0] == '!!help'):
+        logger.info("Admin help")
         await client.send_message(
             message.channel,
             """
@@ -21,18 +25,20 @@ async def admin_command_menu(client, message):
     elif tokens[0] == "!!host":
         await cmds.get_host_url(client, message)
     else:
+        logger.info("Unknown admin command %s" % message.content)
         await client.send_message(
             message.channel,
             'Unknown command "%s".' % tokens[0])
 
 
 async def command_menu(client, message):
-    print("Command")
-    print("Message: %s" % message.content)
+    # print("Message: %s" % message.content)
+    logger.info("Regular command: %s" % message.content)
 
     tokens = message.content.split(' ')
 
     if tokens[0] == '!help':
+        logger.info("Help")
         await client.send_message(
             message.channel,
             """
@@ -67,6 +73,7 @@ async def command_menu(client, message):
     elif tokens[0] == '!part':
         await cmds.parts_info(client, message)
     else:
+        logger.info("Unknown command %s." % message.content)
         await client.send_message(
             message.channel,
             'Unknown command "%s".' % tokens[0])

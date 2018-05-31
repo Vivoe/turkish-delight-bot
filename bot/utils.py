@@ -2,7 +2,11 @@ import argparse
 import asyncio
 import io
 import json
+import logging
 import requests
+
+
+logger = logging.getLogger()
 
 paths = {
     'relic_info': 'data/relic_info.json',
@@ -99,6 +103,7 @@ class DiscordParser(argparse.ArgumentParser):
             return args
         except SystemExit as e:
             # Get buffer and reset stream.
+            logger.info("Throwing sys_exit from argparse help.")
             out = self.arg_stream.getvalue()
             self.arg_stream = io.StringIO()
 

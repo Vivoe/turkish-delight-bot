@@ -1,16 +1,50 @@
 import discord
 import argparse
+import logging
+import sys
+from datetime import datetime
 
-import bot.init_bot as init_bot
-import bot.auth as authentication
-import bot.command_menu as cm
+logger = logging.getLogger()
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
     '-r', type=str, default=None,
     help="Channel ID from which the bot was restarted from.")
+parser.add_argument(
+    '--stdout', action='store_true',
+    help="Print logging to stdout.")
 
 args = parser.parse_args()
+
+# Initialize logger before anything else.
+logger = logging.getLogger()
+
+log_ts = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+
+if args.stdout:
+    print("stdout")
+    handler = logging.StreamHandler(sys.stdout)
+else:
+    print("file")
+    handler = logging.FileHandler('logs/bot_%s.log' % log_ts)
+
+logger.setLevel(logging.INFO)
+# handler.setLevel(logging.INFO)
+
+formatter = logging.Formatter(
+    '%(asctime)s - %(levelname)s: %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S')
+handler.setFormatter(formatter)
+
+logger.addHandler(handler)
+
+
+
+import bot.init_bot as init_bot
+import bot.auth as authentication
+import bot.command_menu as cm
+
+
 auth = None
 client = discord.Client()
 

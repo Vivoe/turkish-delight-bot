@@ -1,10 +1,10 @@
-import json
-import os
-
-import requests
+import logging
 from bs4 import BeautifulSoup
 
 import bot.utils as utils
+
+
+logger = logging.getLogger()
 
 
 def extract_relic_info(soup):
@@ -112,11 +112,17 @@ async def update_relic_info():
     Is ok not be async. Makes sense to block message responses until finished.
     """
 
+    logger.info("Update relic info.")
+
     relic_url = \
         'http://warframe.wikia.com/wiki/Void_Relic/DropLocationsByRelic'
     req = await utils.async_request(relic_url)
 
-    soup = BeautifulSoup(req.text, 'html.parser')
+    if req.ok:
+        soup = BeautifulSoup(req.text, 'html.parser')
+    else:
+        logger.error("Request to %s has response code %s."
+                     % (relic_url, req.status_code))
 
     relic_info = extract_relic_info(soup)
     part_info = part_to_relic_mapping(relic_info)

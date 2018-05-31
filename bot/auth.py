@@ -1,7 +1,10 @@
 import json
-import discord
+import logging
 
 from bot.config import config
+
+
+logger = logging.getLogger()
 
 
 def token():
@@ -11,6 +14,8 @@ def token():
 
 class Auth:
     def __init__(self, client):
+        print("INITING AUTH")
+        logger.info("Init auth.")
 
         self.servers = config['servers']
 

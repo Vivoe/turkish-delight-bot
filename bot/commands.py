@@ -1,6 +1,7 @@
 import asyncio
 from datetime import datetime
 import json
+import logging
 import math
 import re
 import shlex
@@ -10,6 +11,9 @@ from subprocess import Popen
 import bot.utils as utils
 from bot.config import config
 import bot.relic_info as ri
+
+
+logger = logging.getLogger()
 
 
 @utils.catch_async_sys_exit
@@ -39,7 +43,6 @@ async def restart(client, message):
 @utils.catch_async_sys_exit
 async def get_host_url(client, message):
     if 'host' in config:
-
         res = await asyncio.create_subprocess_exec(
             './get_aws_addr', config['host'],
             stdout=asyncio.subprocess.PIPE)
@@ -48,12 +51,14 @@ async def get_host_url(client, message):
         host = raw_host.decode('ascii').rstrip()
         print(host)
         if (host == 'null'):
+            logger.warning("Hostname misconfigured, check AWS instances.")
             out_message = "Error: Host name misconfigured."
         else:
             out_message = host
 
         await client.send_message(message.channel, out_message)
     else:
+        logger.info("Host not configured")
         await client.send_message(message.channel, "Host not configured.")
 
 
@@ -62,19 +67,23 @@ async def void_trader(client, message):
     tradeurl = 'http://deathsnacks.com/wf/data/voidtraders.json'
 
     res = await utils.async_request(tradeurl)
-    trader_data = json.loads(res.text)[0]
+    if res.ok:
+        trader_data = json.loads(res.text)[0]
 
-    st_time = datetime \
-        .fromtimestamp(trader_data['Activation']['sec']) \
-        .strftime('%Y-%m-%d %H:%M:%S')
+        st_time = datetime \
+            .fromtimestamp(trader_data['Activation']['sec']) \
+            .strftime('%Y-%m-%d %H:%M:%S')
 
-    out_message = \
-        "Void trader info:\n" +\
-        trader_data['Character'] + ' @ ' +\
-        trader_data['Node'] + ' at ' +\
-        st_time
+        out_message = \
+            "Void trader info:\n" +\
+            trader_data['Character'] + ' @ ' +\
+            trader_data['Node'] + ' at ' +\
+            st_time
 
-    await client.send_message(message.channel, out_message)
+        await client.send_message(message.channel, out_message)
+    else:
+        logger.error("Request for %s returned error code %s."
+                     % (tradeurl, res.status_code))
 
 
 @utils.catch_async_sys_exit
@@ -107,6 +116,8 @@ async def add_wanted_part(client, message):
 
     user = message.author
 
+    logger.info("item_id: %s, user: %s" % (item_id, user.name))
+
     market_url = utils.warframe_market_url(item_id)
 
     res = await utils.async_request(market_url)
@@ -127,11 +138,14 @@ async def add_wanted_part(client, message):
         wanted_list.append(new_item)
         utils.save_json('wanted_list', wanted_list)
 
+        logger.info("Adding part.")
+
         out_message = 'Adding ' + item_id + ' to wanted list for ' +\
                       user.name + '.'
 
         await client.send_message(message.channel, out_message)
     else:
+        logger.warning("Bad item name %s" % item_id)
         await client.send_message(message.channel, "Bad item id.")
 
 
@@ -149,6 +163,8 @@ async def remove_part(client, message):
 
     user = message.author
 
+    logger.info("item_id: %s, user: %s" % (item_id, user.name))
+
     wanted_list = utils.get_json('wanted_list')
     for i in range(len(wanted_list)):
         want = wanted_list[i]
@@ -160,6 +176,7 @@ async def remove_part(client, message):
             out_message = "Removed entry for part " + item_id +\
                 " for user " + user.name + "."
 
+            logger.info("Part removed.")
             await client.send_message(
                 message.channel,
                 out_message)
@@ -167,6 +184,7 @@ async def remove_part(client, message):
             return
 
     # If nothing got deleted, then will end up here.
+    logger.info("Could not find matching part for user.")
     out_message = "Could not find entry for part " + item_id +\
         " for user " + user.name + "."
 
@@ -262,10 +280,14 @@ async def relic_info(client, message):
 
         # Used purely to check and throw exception.
         relic_info[relic_name]
+
     except:
+        logging.info("Could not find relic %s" % args.relic)
         await client.send_message(
             message.channel,
             "Relic " + args.relic + " not found.")
+
+        return
 
     drops = relic_info[relic_name]['drops']
 
@@ -285,6 +307,7 @@ async def relic_info(client, message):
     locs = relic_info[relic_name]['drop_locations']
 
     if args.c:
+        logging.info("Sorting by drop chance.")
         locs.sort(key=lambda x: float(x.replace('%', '')))
 
     table_str = ''
@@ -319,6 +342,7 @@ async def parts_info(client, message):
 
     part_info = utils.get_json('part_info')
     if item_id in part_info:
+        logging.info("Found relic info for %s." % item_id)
         await client.send_message(
             message.channel,
             'Item ' + item_id + ' is dropped by ' +
@@ -331,13 +355,15 @@ async def parts_info(client, message):
         data = json.loads(req.text)
 
         prices = list(map(lambda x: x['platinum'], data['payload']['orders']))
-
         median = sorted(prices)[len(prices) // 2]
+
+        logging.info("Median price for %s is %s plat." % (item_id, median))
 
         await client.send_message(
             message.channel,
             "Market price for " + item_id + ": " + str(median) + ' plat.')
     else:
+        logging.info("Could not find item in warframe.market.")
         await client.send_message(
             message.channel,
             'Bad item name "' + item + '".')

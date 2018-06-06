@@ -346,7 +346,7 @@ async def parts_info(client, message):
         await client.send_message(
             message.channel,
             'Item ' + item_id + ' is dropped by ' +
-            part_info[item_id].join(', ') + '.')
+            ', '.join(part_info[item_id]) + '.')
 
     url = utils.warframe_market_url(item_id)
     req = await utils.async_request(url)

@@ -22,10 +22,8 @@ logger = logging.getLogger()
 log_ts = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
 if args.stdout:
-    print("stdout")
     handler = logging.StreamHandler(sys.stdout)
 else:
-    print("file")
     handler = logging.FileHandler('logs/bot_%s.log' % log_ts)
 
 logger.setLevel(logging.INFO)
@@ -37,7 +35,6 @@ formatter = logging.Formatter(
 handler.setFormatter(formatter)
 
 logger.addHandler(handler)
-
 
 
 import bot.init_bot as init_bot

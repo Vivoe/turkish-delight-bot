@@ -21,13 +21,15 @@ logger = logging.getLogger()
 
 log_ts = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
+# Logging for boterr.log file.
+print('Starting bot at %s' % log_ts)
+
 if args.stdout:
     handler = logging.StreamHandler(sys.stdout)
 else:
     handler = logging.FileHandler('logs/bot_%s.log' % log_ts)
 
 logger.setLevel(logging.INFO)
-# handler.setLevel(logging.INFO)
 
 formatter = logging.Formatter(
     '%(asctime)s - %(levelname)s: %(message)s',

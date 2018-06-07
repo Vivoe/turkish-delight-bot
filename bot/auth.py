@@ -24,7 +24,6 @@ class Auth:
             self.admin_channels = config['admin_channels']
 
     def authenticate(self, channel):
-        print(self.admin_channels)
         if self.admin_channels is None or channel.id in self.admin_channels:
             return 2
         elif channel.server in self.servers:

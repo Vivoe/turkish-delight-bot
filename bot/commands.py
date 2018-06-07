@@ -208,7 +208,6 @@ async def list_wanted(client, message):
     args = await parser.parse_args(client, message.channel, raw_args)
 
     wanted_list = utils.get_json('wanted_list')
-    print(wanted_list)
 
     if args.t:
         sort_func = lambda x: 0  # Keep order.

@@ -195,11 +195,11 @@ async def remove_part(client, message):
 
 @utils.catch_async_sys_exit
 async def list_wanted(client, message):
+    logger.info("list_wanted command.")
     raw_args = shlex.split(message.content)[1:]
     parser = utils.DiscordParser(
         '!listwanted',
         description="List parts wanted by users. Default sorting is by part.")
-    parser.add_mutually_exclusive_group()
     parser.add_argument('-t', action='store_true',
                         help="Sort by date posted.")
     parser.add_argument('-u', action='store_true',
@@ -232,7 +232,7 @@ async def list_wanted(client, message):
 
         drop_strings = list(map(
             lambda x:
-                x['drop_list'].join(', ')
+				', '.join(x['drop_list'])
                 if isinstance(x['drop_list'], list) else '',
             sub_wanted_list))
 

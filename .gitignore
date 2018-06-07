@@ -5,6 +5,7 @@ keys
 data
 pip-selfcheck.json
 test*
+*.swp
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -16,7 +16,10 @@ paths = {
 
 
 def to_itemid(item):
-    return item.lower().replace(' ', '_')
+    item_id = item.lower().replace(' ', '_')
+    if item_id.endswith('_blueprint'):
+        item_id = item_id[:-10]
+    return item_id
 
 
 def pad(s, n):

@@ -15,7 +15,6 @@ import bot.relic_info as ri
 
 logger = logging.getLogger()
 
-
 @utils.catch_async_sys_exit
 async def plat_conversion(client, message):
     raw_args = shlex.split(message.content)[1:]

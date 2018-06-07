@@ -2,6 +2,7 @@ import discord
 import argparse
 import logging
 import sys
+import traceback
 from datetime import datetime
 
 logger = logging.getLogger()
@@ -53,11 +54,17 @@ async def on_ready():
     global auth
 
     auth = authentication.Auth(client)
-    await init_bot.init(client, args)
+    try:
+        await init_bot.init(client, args)
+    except:
+        logger.error(traceback.format_exc())
 
 
 @client.event
 async def on_message(message):
-    await cm.exec_command(client, auth, message)
+    try:
+        await cm.exec_command(client, auth, message)
+    except:
+        logger.error(traceback.format_exc())
 
 client.run(authentication.token())

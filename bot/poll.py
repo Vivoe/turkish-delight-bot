@@ -51,7 +51,7 @@ async def check_alerts(client, channel):
 
                 await client.send_message(
                     channel,
-                    '<@' + users.join('> <@') + '>: Alert for part ' +
+                    '<@' + '> <@'.join(users) + '>: Alert for part ' +
                     item_id + '\nhttp://deathsnacks.com/wf/')
 
         utils.save_json('wanted_list', wanted_list)

@@ -226,57 +226,18 @@ async def list_wanted(client, message):
 
     wanted_list.sort(key=sort_func)
 
-    # Formatting table.
-    user_tab = max(
-        10,
-        max(map(lambda x: len(x['user']) + 5, wanted_list)))
-    item_tab = max(
-        10,
-        max(map(lambda x: len(x['item_id']) + 5, wanted_list)))
+    table = [['Part', 'User', 'Drop Loaction']]
 
-    drop_strings = list(map(
-        lambda x:
-            ', '.join(x['drop_list'])
-            if isinstance(x['drop_list'], list) else '',
-        wanted_list))
+    # Convert to table form.
+    table_rows = list(map(lambda w: [
+        w['user'],
+        w['item_id'],
+        ', '.join(w['drop_list']) if isinstance(w['drop_list'], list) else ''
+    ], wanted_list))
 
-    drop_tab = max(
-        10,
-        max(map(lambda x: len(x) + 5, drop_strings)))
+    table.extend(table_rows)
 
-    header = '```' +\
-        utils.pad('Part', item_tab, True) + '| ' +\
-        utils.pad('User', user_tab, True) + '| ' +\
-        'Drop location\n' +\
-        '-' * (user_tab + item_tab + drop_tab) + '\n'
-
-    i = 0
-    table_str = 'Wanted list:\n' + header
-    logger.debug(wanted_list)
-    print(len(wanted_list))
-    while i < len(wanted_list):
-        want = wanted_list[i]
-
-        print(i)
-
-        table_row =\
-            utils.pad(want['item_id'], item_tab, True) + '| ' +\
-            utils.pad(want['user'], user_tab, True) + '| ' +\
-            drop_strings[i] + '\n'
-
-        # Keep adding rows to table until out of message space.
-        if len(table_str) + len(table_row) < 1995:
-            table_str += table_row
-            i += 1
-        else:  # When out of message space, send the message.
-            table_str += '```'
-            print(table_str)
-            await client.send_message(message.channel, table_str)
-            table_str = header
-
-    table_str += '```'
-    print(table_str)
-    await client.send_message(message.channel, table_str)
+    await utils.print_table(client, message, table, 'Wanted list:')
 
 
 @utils.catch_async_sys_exit
@@ -329,22 +290,18 @@ async def relic_info(client, message):
         logging.info("Sorting by drop chance.")
         locs.sort(key=lambda x: float(x.replace('%', '')))
 
-    table_str = ''
-    for i in range(len(locs)):
-        loc = locs[i]
+    header = [['Mission type', 'Category', 'Rotation', 'Chance']]
 
-        table_str +=\
-            utils.pad(loc['mission_type'], 17) + '| ' +\
-            utils.pad(loc['tier'], 17) + '| ' +\
-            utils.pad(loc['rotation'], 9) + '| ' +\
-            utils.pad(loc['chance'], 10) + '\n'
+    table_rows = list(map(lambda x: [
+        x['mission_type'],
+        x['tier'],
+        x['rotation'],
+        x['chance']
+    ], locs))
 
-    await client.send_message(
-        message.channel,
-        relic_name + ' drop locations:\n' + '```' +
-        'Mission type     | Category         | Rotation | Chance\n' +
-        '-------------------------------------------------------\n' +
-        table_str + '```')
+    table = header + table_rows
+
+    await utils.print_table(client, message, table, "Drop locations:")
 
 
 @utils.catch_async_sys_exit
@@ -414,3 +371,55 @@ async def mod_info(client, message):
         await client.send_message(
             message.channel,
             "Could not find mod %s." % item_id)
+
+
+@utils.catch_async_sys_exit
+async def weapon_info(client, message):
+    raw_args = shlex.split(message.content)[1:]
+
+    parser = utils.DiscordParser(
+        "!drop",
+        description="Drop locations for prime items.")
+    parser.add_argument(
+        "item", type=str,
+        help="The requested weapon/warframe.")
+
+    args = await parser.parse_args(client, message.channel, raw_args)
+
+    item_id = utils.to_itemid(args.item)
+    wikia_id = utils.to_wikiaid(item_id)
+
+    url = 'http://warframe.wikia.com/wiki/' + wikia_id
+
+    req = await utils.async_request(url)
+
+    if req.ok:
+        soup = BeautifulSoup(req.text, 'html.parser')
+
+        # Table rows.
+        trs = soup.find('b', string='Drop Locations')\
+            .next.next.next.find_all('tr')
+
+        message_str = 'Drop locations for %s:\n```\n' % item_id
+        for tr in trs:
+            td = tr.find_all('td')
+            part = td[0].text.strip()
+
+            drop_locations = \
+                BeautifulSoup(
+                    str(td[1]).replace('<br/>', '\n'),
+                    'html.parser') \
+                .text.strip().split('\n')
+
+            message_str += part + '\n'
+
+            for drop_loc in drop_locations:
+                message_str += '\t' + drop_loc + '\n'
+
+        await client.send_message(
+            message.channel,
+            message_str + '```')
+    else:
+        await client.send_message(
+            message.channel,
+            "Could not find item %s." % item_id)

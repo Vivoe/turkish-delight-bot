@@ -84,6 +84,56 @@ async def async_request(url):
     response = await loop.run_in_executor(None, requests.get, url)
     return response
 
+
+async def print_table(client, message, table, title=None):
+    """
+    Table is a list of rows.
+    """
+
+    print(table)
+
+    n_cols = len(table[0])
+    n_rows = len(table) - 1  # Don't include header.
+
+    def get_col_width(row):
+        max_len = max(map(len, row))
+        return max(5, max_len) + 5
+
+    # Transpose table, take max.
+    col_widths = list(map(get_col_width, zip(*table)))
+    table_width = sum(col_widths) + 2 * (n_cols - 1)
+
+    def to_row(row):
+        return '| '.join(list(map(
+            lambda sl: pad(sl[0], sl[1]),
+            zip(row, col_widths)))) + '\n'
+
+    header = to_row(table[0])
+    header += ('-' * table_width) + '\n'
+
+    i = 0
+    if title:
+        table_str = title + '\n```' + header
+    else:
+        table_str = '```' + header
+
+    while i < n_rows:
+        row = table[i + 1]  # Offset for header.
+
+        table_row = to_row(row)
+
+        if len(table_str) + len(table_row) < 1995:
+            table_str += table_row
+            i += 1
+        else:
+            table_str += '```'
+            await client.send_message(message.channel, table_str)
+            table_str = header
+
+    table_str += '```'
+    await client.send_message(message.channel, table_str)
+
+
 #
 # Argument parser tricks
 #

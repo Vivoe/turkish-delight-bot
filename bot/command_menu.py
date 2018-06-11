@@ -53,6 +53,7 @@ async def command_menu(client, message):
             !relic relic
             !part part
             !mod mod
+            !drop primeitem
             """)
     elif tokens[0] == '!plat':
         await cmds.plat_conversion(client, message)
@@ -74,6 +75,8 @@ async def command_menu(client, message):
         await cmds.parts_info(client, message)
     elif tokens[0] == '!mod':
         await cmds.mod_info(client, message)
+    elif tokens[0] == '!drop':
+        await cmds.weapon_info(client, message)
     else:
         logger.info("Unknown command %s." % message.content)
         await client.send_message(

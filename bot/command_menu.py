@@ -32,7 +32,6 @@ async def admin_command_menu(client, message):
 
 
 async def command_menu(client, message):
-    # print("Message: %s" % message.content)
     logger.info("Regular command: %s" % message.content)
 
     tokens = message.content.split(' ')
@@ -85,7 +84,11 @@ async def exec_command(client, auth, message):
 
     auth_level = auth.authenticate(message.channel)
 
+    logger.debug("Messsage from channel %s with auth level %s: %s" %
+                 (message.channel.name, auth_level, message.content))
+
+
     if (auth_level >= 2 and message.content[:2] == '!!'):
         await admin_command_menu(client, message)
-    elif message.content[0] == '!':
+    elif message.content[0] == '!' and auth_level >= 1:
         await command_menu(client, message)

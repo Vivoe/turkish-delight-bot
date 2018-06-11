@@ -387,6 +387,9 @@ async def weapon_info(client, message):
     args = await parser.parse_args(client, message.channel, raw_args)
 
     item_id = utils.to_itemid(args.item)
+    if not item_id.endswith('_prime'):
+        item_id += '_prime'
+
     wikia_id = utils.to_wikiaid(item_id)
 
     url = 'http://warframe.wikia.com/wiki/' + wikia_id
@@ -394,11 +397,25 @@ async def weapon_info(client, message):
     req = await utils.async_request(url)
 
     if req.ok:
+        # try:
         soup = BeautifulSoup(req.text, 'html.parser')
 
+        # Disambiguation between warframes and weapons.
+
         # Table rows.
-        trs = soup.find('b', string='Drop Locations')\
-            .next.next.next.find_all('tr')
+        drop_table = soup.find('b', string='Drop Locations')\
+            .next.next.next
+
+        warframe_table = drop_table.find(
+            'div',
+            {'class': 'tabbertab', 'title': 'PC'})
+
+        if warframe_table:
+            table = warframe_table
+        else:
+            table = drop_table
+
+        trs = table.find_all('tr')
 
         message_str = 'Drop locations for %s:\n```\n' % item_id
         for tr in trs:
@@ -419,7 +436,11 @@ async def weapon_info(client, message):
         await client.send_message(
             message.channel,
             message_str + '```')
+        # except Exception:
+        #     await client.send_message(
+        #         message.channel,
+        #         "Could not find drop locations for %s." % item_id)
     else:
         await client.send_message(
             message.channel,
-            "Could not find item %s." % item_id)
+            "Could not find prime item %s." % item_id)

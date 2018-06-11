@@ -39,7 +39,8 @@ async def check_alerts(client, channel):
                 if want['item_id'] == item_id:
 
                     if (('last_updated' not in want) or
-                            (ts - want['last_updated'] >= 12 * 60 * 60)):
+                            # If within the same hour, probably the same alert.
+                            (ts - want['last_updated'] >= 60 * 60)):
 
                         users.append(want['userID'])
                         usernames.append(want['user'])
@@ -51,7 +52,7 @@ async def check_alerts(client, channel):
 
                 await client.send_message(
                     channel,
-                    '<@' + '> <@'.join(users) + '>: Alert for part ' +
+                    '<@' + '> <@'.join(users) + '>: Alert for ' +
                     item_id + '\nhttp://deathsnacks.com/wf/')
 
         utils.save_json('wanted_list', wanted_list)

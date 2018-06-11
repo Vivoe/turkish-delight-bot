@@ -31,6 +31,10 @@ def to_itemid(item):
     return item_id
 
 
+def to_wikiaid(item_id):
+    return '_'.join(list(map(lambda x: x.capitalize(), item_id.split('_'))))
+
+
 def pad(s, n, tab=True):
     assert n - len(s) >= 0, "Cannot pad length less than string length."
 

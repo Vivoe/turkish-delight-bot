@@ -2,10 +2,10 @@ import asyncio
 from datetime import datetime
 import json
 import logging
-import math
 import re
 import shlex
 
+from bs4 import BeautifulSoup
 from subprocess import Popen
 
 import bot.utils as utils
@@ -14,6 +14,7 @@ import bot.relic_info as ri
 
 
 logger = logging.getLogger()
+
 
 @utils.catch_async_sys_exit
 async def plat_conversion(client, message):
@@ -385,3 +386,31 @@ async def parts_info(client, message):
         await client.send_message(
             message.channel,
             'Bad item name "' + item + '".')
+
+
+@utils.catch_async_sys_exit
+async def mod_info(client, message):
+    raw_args = shlex.split(message.content)[1:]
+
+    parser = utils.DiscordParser("!mod")
+    parser.add_argument("mod", type=str, help="The requested mod.")
+
+    args = await parser.parse_args(client, message.channel, raw_args)
+
+    item_id = utils.to_itemid(args.mod)
+    wikia_id = utils.to_wikiaid(item_id)
+
+    url = 'http://warframe.wikia.com/wiki/' + wikia_id
+
+    req = await utils.async_request(url)
+
+    if req.ok:
+        soup = BeautifulSoup(req.text, 'html.parser')
+        image_url = soup.find('img', {'class': 'pi-image-thumbnail'})\
+            .attrs['src']
+
+        await client.send_message(message.channel, image_url)
+    else:
+        await client.send_message(
+            message.channel,
+            "Could not find mod %s." % item_id)

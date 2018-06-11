@@ -52,6 +52,7 @@ async def command_menu(client, message):
             !listwanted
             !relic relic
             !part part
+            !mod mod
             """)
     elif tokens[0] == '!plat':
         await cmds.plat_conversion(client, message)
@@ -71,6 +72,8 @@ async def command_menu(client, message):
         await cmds.relic_info(client, message)
     elif tokens[0] == '!part':
         await cmds.parts_info(client, message)
+    elif tokens[0] == '!mod':
+        await cmds.mod_info(client, message)
     else:
         logger.info("Unknown command %s." % message.content)
         await client.send_message(

@@ -31,8 +31,17 @@ def to_itemid(item):
     return item_id
 
 
-def pad(s, n):
-    return s + ' ' * (n - len(s))
+def pad(s, n, tab=True):
+    assert n - len(s) >= 0, "Cannot pad length less than string length."
+
+    # Use tabs to save character count.
+    if tab:
+        padlen = n - len(s)
+        n_tabs = padlen // 4
+        n_spaces = padlen % 4
+        return s + '\t' * n_tabs + ' ' * n_spaces
+    else:
+        return s + ' ' * (n - len(s))
 
 
 def idx_to_rarity(idx):

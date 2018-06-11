@@ -207,6 +207,8 @@ async def list_wanted(client, message):
                         help="Sort by date posted.")
     parser.add_argument('-u', action='store_true',
                         help="Sort by user.")
+    parser.add_argument('-i', action='store_true',
+                        help="Sort by item.")
 
     args = await parser.parse_args(client, message.channel, raw_args)
 
@@ -216,8 +218,10 @@ async def list_wanted(client, message):
         sort_func = lambda x: 0  # Keep order.
     elif args.u:
         sort_func = lambda x: x['user']
-    else:
+    elif args.i:
         sort_func = lambda x: x['item_id']
+    else:  # Default: Sort by user.
+        sort_func = lambda x: x['user']
 
     wanted_list.sort(key=sort_func)
 
@@ -240,31 +244,38 @@ async def list_wanted(client, message):
         max(map(lambda x: len(x) + 5, drop_strings)))
 
     header = '```' +\
-        utils.pad('Part', item_tab) + '| ' +\
-        utils.pad('User', user_tab) + '| ' +\
+        utils.pad('Part', item_tab, True) + '| ' +\
+        utils.pad('User', user_tab, True) + '| ' +\
         'Drop location\n' +\
-        '-' * (user_tab + item_tab + drop_tab + 10) + '\n'
-
-    await client.send_message(message.channel, "Wanted list:\n")
+        '-' * (user_tab + item_tab + drop_tab) + '\n'
 
     i = 0
+    table_str = 'Wanted list:\n' + header
+    logger.debug(wanted_list)
+    print(len(wanted_list))
     while i < len(wanted_list):
         want = wanted_list[i]
-        table_str = header
 
-        while True:
-            table_row =\
-                utils.pad(want['item_id'], item_tab) + '| ' +\
-                utils.pad(want['user'], user_tab) + '| ' +\
-                utils.pad(drop_strings[i], drop_tab) + '\n'
+        print(i)
 
-            # Keep adding rows to table until out of message space.
-            if len(table_str) + len(table_row) < 2000:
-                table_str += table_row
-            else:  # When out of message space, send the message.
-                await client.send_message(
-                    message.channel, table_str)
-                break
+        table_row =\
+            utils.pad(want['item_id'], item_tab, True) + '| ' +\
+            utils.pad(want['user'], user_tab, True) + '| ' +\
+            drop_strings[i] + '\n'
+
+        # Keep adding rows to table until out of message space.
+        if len(table_str) + len(table_row) < 1995:
+            table_str += table_row
+            i += 1
+        else:  # When out of message space, send the message.
+            table_str += '```'
+            print(table_str)
+            await client.send_message(message.channel, table_str)
+            table_str = header
+
+    table_str += '```'
+    print(table_str)
+    await client.send_message(message.channel, table_str)
 
 
 @utils.catch_async_sys_exit

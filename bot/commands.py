@@ -108,6 +108,9 @@ async def add_wanted_part(client, message):
     parser = utils.DiscordParser("!want")
     parser.add_argument('part', type=str, help="The wanted part name.")
 
+    parser.add_argument('--unsafe', action='store_true', 
+                        help="Do not check for item validity.")
+
     args = await parser.parse_args(client, message.channel, raw_args)
 
     item = args.part
@@ -119,9 +122,10 @@ async def add_wanted_part(client, message):
 
     market_url = utils.warframe_market_url(item_id)
 
-    res = await utils.async_request(market_url)
+    if not args.unsafe:
+        res = await utils.async_request(market_url)
 
-    if res.ok:
+    if args.unsafe or res.ok:
         parts_info = utils.get_json('part_info')
 
         drop_relic_list = parts_info.get(item_id)

@@ -415,6 +415,21 @@ async def weapon_info(client, message):
         else:
             table = drop_table
 
+        if not warframe_table:
+            man_table = soup.find('table', {'class': 'foundrytable'})
+            mats_row = man_table.find_all('tr', recursive=False)[1]
+            mats_soup = mats_row.find_all('td')[:5]
+
+            mats_str = '\nRequired materials:\n'
+            for mat_soup in mats_soup:
+                if mat_soup.text.strip() == '':
+                    break
+
+                mat = mat_soup.find('a').attrs['title']
+                mat_count = mat_soup.text.strip()
+
+                mats_str += '\t%s: %s\n' % (mat, mat_count)
+
         trs = table.find_all('tr')
 
         message_str = 'Drop locations for %s:\n```\n' % item_id
@@ -433,13 +448,11 @@ async def weapon_info(client, message):
             for drop_loc in drop_locations:
                 message_str += '\t' + drop_loc + '\n'
 
+        message_str += mats_str + '```'
+
         await client.send_message(
             message.channel,
-            message_str + '```')
-        # except Exception:
-        #     await client.send_message(
-        #         message.channel,
-        #         "Could not find drop locations for %s." % item_id)
+            message_str)
     else:
         await client.send_message(
             message.channel,

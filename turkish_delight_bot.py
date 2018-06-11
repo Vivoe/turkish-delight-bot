@@ -14,6 +14,9 @@ parser.add_argument(
 parser.add_argument(
     '--stdout', action='store_true',
     help="Print logging to stdout.")
+parser.add_argument(
+    '--debug', action='store_true',
+    help='Print debug logs.')
 
 args = parser.parse_args()
 
@@ -30,7 +33,10 @@ if args.stdout:
 else:
     handler = logging.FileHandler('logs/bot_%s.log' % log_ts)
 
-logger.setLevel(logging.INFO)
+if args.debug:
+    logger.setLevel(logging.DEBUG)
+else:
+    logger.setLevel(logging.INFO)
 
 formatter = logging.Formatter(
     '%(asctime)s - %(levelname)s: %(message)s',

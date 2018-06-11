@@ -47,13 +47,15 @@ async def check_alerts(client, channel):
                         wanted_list[i]['last_updated'] = ts
 
             if len(users) > 0:
-                logging.info('Alert for %s, notifying %s'
-                             % (item_id, ', '.join(usernames)))
+                logger.info('Alert for %s, notifying %s'
+                            % (item_id, ', '.join(usernames)))
 
-                await client.send_message(
-                    channel,
-                    '<@' + '> <@'.join(users) + '>: Alert for ' +
-                    item_id + '\nhttp://deathsnacks.com/wf/')
+                for userID in users:
+                    user = await client.get_user_info(userID)
+                    await client.send_message(
+                        user,
+                        'Alert for ' +
+                        item_id + '\nhttp://deathsnacks.com/wf/')
 
         utils.save_json('wanted_list', wanted_list)
     else:

@@ -22,13 +22,12 @@ buildable = [
     'carapace'
 ]
 
+
 def to_itemid(item):
     item_id = item.lower().replace(' ', '_')
     item_tokens = item_id.split('_')
     if item_id.endswith('_blueprint') and item_tokens[-2] in buildable:
         item_id = item_id[:-10]
-    logger.info(item)
-    logger.info(item_id)
     return item_id
 
 

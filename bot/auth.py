@@ -23,10 +23,14 @@ class Auth:
         else:
             self.admin_channels = config['admin_channels']
 
+        logger.info("Admin channels: %s" % self.admin_channels)
+        logger.info("Servers: %s" % self.servers)
+
     def authenticate(self, channel):
+        logger.debug("Message from channel %s" % channel.id)
         if self.admin_channels is None or channel.id in self.admin_channels:
             return 2
-        elif channel.server in self.servers:
+        elif channel.server.id in self.servers:
             return 1
         else:
             return 0

@@ -108,7 +108,7 @@ async def add_wanted_part(client, message):
     parser = utils.DiscordParser("!want")
     parser.add_argument('part', type=str, help="The wanted part name.")
 
-    parser.add_argument('--unsafe', action='store_true', 
+    parser.add_argument('--unsafe', action='store_true',
                         help="Do not check for item validity.")
 
     args = await parser.parse_args(client, message.channel, raw_args)
@@ -221,45 +221,50 @@ async def list_wanted(client, message):
 
     wanted_list.sort(key=sort_func)
 
+    # Formatting table.
+    user_tab = max(
+        10,
+        max(map(lambda x: len(x['user']) + 5, wanted_list)))
+    item_tab = max(
+        10,
+        max(map(lambda x: len(x['item_id']) + 5, wanted_list)))
+
+    drop_strings = list(map(
+        lambda x:
+            ', '.join(x['drop_list'])
+            if isinstance(x['drop_list'], list) else '',
+        wanted_list))
+
+    drop_tab = max(
+        10,
+        max(map(lambda x: len(x) + 5, drop_strings)))
+
+    header = '```' +\
+        utils.pad('Part', item_tab) + '| ' +\
+        utils.pad('User', user_tab) + '| ' +\
+        'Drop location\n' +\
+        '-' * (user_tab + item_tab + drop_tab + 10) + '\n'
+
     await client.send_message(message.channel, "Wanted list:\n")
 
-    for idx in range(math.ceil(len(wanted_list) / 10)):
-        sub_wanted_list = wanted_list[idx * 10:(idx + 1) * 10]
+    i = 0
+    while i < len(wanted_list):
+        want = wanted_list[i]
+        table_str = header
 
-        user_tab = max(
-            10,
-            max(map(lambda x: len(x['user']) + 5, sub_wanted_list)))
-        item_tab = max(
-            10,
-            max(map(lambda x: len(x['item_id']) + 5, sub_wanted_list)))
-
-        drop_strings = list(map(
-            lambda x:
-				', '.join(x['drop_list'])
-                if isinstance(x['drop_list'], list) else '',
-            sub_wanted_list))
-
-        drop_tab = max(
-            10,
-            max(map(lambda x: len(x) + 5, drop_strings)))
-
-        table_str = ''
-        for i in range(len(sub_wanted_list)):
-            want = sub_wanted_list[i]
-
-            table_str +=\
+        while True:
+            table_row =\
                 utils.pad(want['item_id'], item_tab) + '| ' +\
                 utils.pad(want['user'], user_tab) + '| ' +\
                 utils.pad(drop_strings[i], drop_tab) + '\n'
 
-        await client.send_message(
-            message.channel,
-            '```' +
-            utils.pad('Part', item_tab) + '| ' +
-            utils.pad('User', user_tab) + '| ' +
-            'Drop location\n' +
-            '-' * (user_tab + item_tab + drop_tab + 10) + '\n' +
-            table_str + '```')
+            # Keep adding rows to table until out of message space.
+            if len(table_str) + len(table_row) < 2000:
+                table_str += table_row
+            else:  # When out of message space, send the message.
+                await client.send_message(
+                    message.channel, table_str)
+                break
 
 
 @utils.catch_async_sys_exit

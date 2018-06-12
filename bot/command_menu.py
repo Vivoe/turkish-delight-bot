@@ -75,7 +75,7 @@ async def command_menu(client, message):
         await cmds.parts_info(client, message)
     elif tokens[0] == '!mod':
         await cmds.mod_info(client, message)
-    elif tokens[0] == '!drop':
+    elif tokens[0] == '!info':
         await cmds.weapon_info(client, message)
     else:
         logger.info("Unknown command %s." % message.content)

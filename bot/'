@@ -378,7 +378,7 @@ async def weapon_info(client, message):
     raw_args = shlex.split(message.content)[1:]
 
     parser = utils.DiscordParser(
-        "!info",
+        "!drop",
         description="Info and drop locations for prime items.")
     parser.add_argument(
         "item", type=str,

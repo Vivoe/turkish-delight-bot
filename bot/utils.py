@@ -90,8 +90,6 @@ async def print_table(client, message, table, title=None):
     Table is a list of rows.
     """
 
-    print(table)
-
     n_cols = len(table[0])
     n_rows = len(table) - 1  # Don't include header.
 

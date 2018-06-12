@@ -49,7 +49,6 @@ async def get_host_url(client, message):
 
         raw_host = await res.stdout.readline()
         host = raw_host.decode('ascii').rstrip()
-        print(host)
         if (host == 'null'):
             logger.warning("Hostname misconfigured, check AWS instances.")
             out_message = "Error: Host name misconfigured."
@@ -448,7 +447,10 @@ async def weapon_info(client, message):
             for drop_loc in drop_locations:
                 message_str += '\t' + drop_loc + '\n'
 
-        message_str += mats_str + '```'
+        if not warframe_table:
+            message_str += mats_str
+
+        message_str += '```'
 
         await client.send_message(
             message.channel,

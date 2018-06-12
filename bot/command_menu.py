@@ -54,6 +54,8 @@ async def command_menu(client, message):
             !part part
             !mod mod
             !drop primeitem
+
+            Use !<cmd> -h for more details.
             """)
     elif tokens[0] == '!plat':
         await cmds.plat_conversion(client, message)

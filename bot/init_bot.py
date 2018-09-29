@@ -41,4 +41,5 @@ async def init(client, args):
     await ri.update_relic_info()
 
     logger.info("Bot ready.")
-    await poll.poll(client)
+    # Temporarily disabling notifs
+    # await poll.poll(client)

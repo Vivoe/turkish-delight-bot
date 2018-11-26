@@ -45,15 +45,15 @@ async def command_menu(client, message):
             !help
             !plat n_plat
             !voidtrader
-            !updaterelics
-            !listrelics
+            !updaterelics DEPRECIATED
+            !listrelics DEPRECIATED
             !want part
             !remove part
             !listwanted
             !relic relic
             !part part
             !mod mod
-            !drop primeitem
+            !info primeitem
 
             Use !<cmd> -h for more details.
             """)
@@ -78,7 +78,7 @@ async def command_menu(client, message):
     elif tokens[0] == '!mod':
         await cmds.mod_info(client, message)
     elif tokens[0] == '!info':
-        await cmds.weapon_info(client, message)
+        await cmds.prime_info(client, message)
     else:
         logger.info("Unknown command %s." % message.content)
         await client.send_message(

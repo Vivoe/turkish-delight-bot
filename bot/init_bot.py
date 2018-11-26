@@ -43,4 +43,5 @@ async def init(client, args):
 
     logger.info("Bot ready.")
     hn.send_notif("Bot started.")
-    #await poll.poll(client)
+    # Temporarily disabling notifs
+    # await poll.poll(client)

@@ -88,7 +88,8 @@ async def void_trader(client, message):
 @utils.catch_async_sys_exit
 async def update_relics(client, message):
     await ri.update_relic_info()
-    await client.send_message(message.channel, "Relic tables updated.")
+    await client.send_message(message.channel, "WARNING: NOT MANTAINED. \n"+\
+        "Relic tables updated.")
 
 
 @utils.catch_async_sys_exit
@@ -98,6 +99,7 @@ async def list_relics(client, message):
 
     await client.send_message(
         message.channel,
+        "WARNING: NOT MANTAINED, LIST OUT OF DATE.\n" +\
         "Currently droppable relics:\n" + '\n'.join(relics))
 
 
@@ -148,8 +150,8 @@ async def add_wanted_part(client, message):
 
         await client.send_message(message.channel, out_message)
     else:
-        logger.warning("Bad item name %s" % item_id)
-        await client.send_message(message.channel, "Bad item id.")
+        logger.warning("Bad item name or uncached item %s" % item_id)
+        await client.send_message(message.channel, "Bad item id or uncached item.")
 
 
 @utils.catch_async_sys_exit
@@ -249,8 +251,6 @@ async def relic_info(client, message):
 
     args = await parser.parse_args(client, message.channel, raw_args)
 
-    relic_info = utils.get_json('relic_info')
-
     try:
         groups = re.split(' |_', args.relic)
         era = groups[0].capitalize()
@@ -258,7 +258,8 @@ async def relic_info(client, message):
         relic_name = era + ' ' + model
 
         # Used purely to check and throw exception.
-        relic_info[relic_name]
+        # relic_info[relic_name]
+        relic_info = ri.get_relic_info(relic_name)
 
     except:
         logging.info("Could not find relic %s" % args.relic)
@@ -268,7 +269,7 @@ async def relic_info(client, message):
 
         return
 
-    drops = relic_info[relic_name]['drops']
+    drops = relic_info['drops']
 
     await client.send_message(
         message.channel,
@@ -283,7 +284,7 @@ async def relic_info(client, message):
         'Rare:\n' +
         '\t' + drops[5] + '\n' + '```')
 
-    locs = relic_info[relic_name]['drop_locations']
+    locs = relic_info['drop_locations']
 
     if args.c:
         logging.info("Sorting by drop chance.")
@@ -373,7 +374,7 @@ async def mod_info(client, message):
 
 
 @utils.catch_async_sys_exit
-async def weapon_info(client, message):
+async def prime_info(client, message):
     raw_args = shlex.split(message.content)[1:]
 
     parser = utils.DiscordParser(

@@ -8,6 +8,7 @@ import bot.utils as utils
 from bot.config import config
 import bot.relic_info as ri
 import bot.poll as poll
+import bot.http_notif as hn
 
 logger = logging.getLogger()
 
@@ -41,4 +42,5 @@ async def init(client, args):
     await ri.update_relic_info()
 
     logger.info("Bot ready.")
-    await poll.poll(client)
+    hn.send_notif("Bot started.")
+    #await poll.poll(client)

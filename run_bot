@@ -24,6 +24,6 @@ fi
 
 ts=$(date +%s)
 pkill -f "python3 turkish_delight_bot.py"
-python3 turkish_delight_bot.py $RESTART_CHANNEL_ID &>> logs/boterr.log &
+python3 turkish_delight_bot.py $RESTART_CHANNEL_ID >> logs/boterr.log 2>&1 &
 
 echo "Plat-bot running."

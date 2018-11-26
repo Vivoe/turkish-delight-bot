@@ -111,9 +111,9 @@ async def print_table(client, message, table, title=None):
 
     i = 0
     if title:
-        table_str = title + '\n```' + header
+        table_str = title + '\n```\n' + header
     else:
-        table_str = '```' + header
+        table_str = '\n```\n' + header
 
     while i < n_rows:
         row = table[i + 1]  # Offset for header.
@@ -126,7 +126,10 @@ async def print_table(client, message, table, title=None):
         else:
             table_str += '```'
             await client.send_message(message.channel, table_str)
-            table_str = header
+            if title:
+                table_str = title + '\n```\n' + header
+            else:
+                 table_str = '\n```\n' + header
 
     table_str += '```'
     await client.send_message(message.channel, table_str)

@@ -51,7 +51,6 @@ import bot.init_bot as init_bot
 import bot.auth as authentication
 import bot.command_menu as cm
 
-
 auth = None
 client = discord.Client()
 
